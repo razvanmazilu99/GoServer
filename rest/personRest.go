@@ -6,6 +6,7 @@ import (
 	"goserver/entity"
 	"io/ioutil"
 	"net/http"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -28,6 +29,11 @@ func PostPerson(rw http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(person)
 	rw.Write(bodyBytes)
+}
+
+func GetPerson(rw http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+	rw.Write([]byte(name))
 }
 
 func hasError(rw http.ResponseWriter, err error, message string) bool {
