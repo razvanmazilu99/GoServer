@@ -13,7 +13,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Route("/v1", func(r chi.Router) {
 		r.Get("/person", rest.Welcome)
-		r.Post("/person", rest.Welcome)
+		r.Post("/person", rest.PostPerson)
 	})
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", router)
 }
