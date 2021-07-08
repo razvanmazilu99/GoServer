@@ -34,7 +34,7 @@ func Initdatabase(databaseURL string, version uint) {
 
 	migrateConnection.Close()
 
-	db, err := gorm.Open("postgres", databaseURL)
+	db, err = gorm.Open("postgres", databaseURL)
 
 	if err != nil {
 		fmt.Println(dbErrorMessage)

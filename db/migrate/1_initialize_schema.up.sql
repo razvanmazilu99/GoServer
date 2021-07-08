@@ -7,7 +7,7 @@ CREATE TABLE vehicles (
     CONSTRAINT vehicle_key PRIMARY KEY (id)
 );
 
-CREATE TABLE persons ( 
+CREATE TABLE people ( 
     id varchar(10) NOT NULL,
     name varchar(100) NOT NULL,
     age int NULL,

@@ -3,6 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
+	"goserver/db"
 	"goserver/entity"
 	"io/ioutil"
 	"net/http"
@@ -27,13 +28,27 @@ func PostPerson(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	db.GetDB().Create(&person)
+
 	fmt.Println(person)
 	rw.Write(bodyBytes)
 }
 
 func GetPerson(rw http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("name")
-	rw.Write([]byte(name))
+
+	name := r.URL.Query().Get("id")
+
+	var person entity.Person
+
+	db.GetDB().Where("id=?", name).Find(&person)
+
+	personBytes, err := json.Marshal(person)
+
+	if hasError(rw, err, "Internal Issue") {
+		return
+	}
+
+	rw.Write(personBytes)
 }
 
 func hasError(rw http.ResponseWriter, err error, message string) bool {
