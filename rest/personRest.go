@@ -40,7 +40,16 @@ func GetPerson(rw http.ResponseWriter, r *http.Request) {
 
 	var person entity.Person
 
-	db.GetDB().Where("id=?", name).Find(&person)
+	result := db.GetDB().Where("id=?", name).Find(&person)
+
+	if result.RecordNotFound() {
+		http.Error(rw, "No record", http.StatusInternalServerError)
+		return
+	}
+
+	if result.Error != nil {
+		http.Error(rw, result.Error.Error(), http.StatusInternalServerError)
+	}
 
 	personBytes, err := json.Marshal(person)
 
