@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	db.Initdatabase("postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable")
+	db.Initdatabase("postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable", 1)
 
 	http.HandleFunc("/", rest.Welcome)
 	http.HandleFunc("/health", rest.Welcome)
