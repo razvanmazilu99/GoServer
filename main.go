@@ -1,6 +1,7 @@
 package main
 
 import (
+	"goserver/db"
 	"goserver/rest"
 	"net/http"
 
@@ -8,6 +9,9 @@ import (
 )
 
 func main() {
+
+	db.Initdatabase("postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable")
+
 	http.HandleFunc("/", rest.Welcome)
 	http.HandleFunc("/health", rest.Welcome)
 	router := chi.NewRouter()
