@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"goserver/config"
 
 	"github.com/golang-migrate/migrate"
 	_ "github.com/golang-migrate/migrate/database/postgres"
@@ -13,15 +14,16 @@ const dbErrorMessage = "Error connecting to database"
 
 var db *gorm.DB
 
-func Initdatabase(databaseURL string, version uint) {
+func Initdatabase() {
 
-	migrateConnection, err := migrate.New("file://db/migrate", databaseURL)
+	migrateConnection, err := migrate.New("file://db/migrate", config.GetConfig().Database.URL)
 
 	if err != nil {
 		fmt.Println("Error creating tables")
 		return
 	}
 
+	version := config.GetConfig().Database.Version
 	currentVersion, _, _ := migrateConnection.Version()
 
 	if version != currentVersion {
@@ -34,11 +36,13 @@ func Initdatabase(databaseURL string, version uint) {
 
 	migrateConnection.Close()
 
-	db, err = gorm.Open("postgres", databaseURL)
+	db, err = gorm.Open("postgres", config.GetConfig().Database.URL)
 
 	if err != nil {
 		fmt.Println(dbErrorMessage)
 	}
+
+	db.LogMode(config.GetConfig().Database.LogMode)
 
 	fmt.Println(db)
 }

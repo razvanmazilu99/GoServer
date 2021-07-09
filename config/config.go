@@ -8,6 +8,7 @@ type Config struct {
 	Database struct {
 		URL     string `envconfig:"default=postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable, optional"`
 		Version uint   `envconfig:"default=1"`
+		LogMode bool `envconfig:"default=false"`
 	}
 	Port       string `envconfig:"default=8080"`
 	APPVersion string `envconfig:"default=v1"`

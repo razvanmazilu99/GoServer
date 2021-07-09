@@ -25,15 +25,17 @@ func main() {
 		log.Fatal("Not able to create config")
 	}
 
-	db.Initdatabase(config.GetConfig().Database.URL, config.GetConfig().Database.Version)
+	db.Initdatabase()
+
+	var endpoint = "/person"
 
 	http.HandleFunc("/", rest.Welcome)
 	http.HandleFunc("/health", rest.Welcome)
 	router := chi.NewRouter()
 	router.Route("/"+config.GetConfig().APPVersion, func(r chi.Router) {
-		r.Get("/person", rest.GetPerson)
-		r.Post("/person", rest.PostPerson)
-		r.Delete("/person", rest.DeletePerson)
+		r.Get(endpoint, rest.GetPerson)
+		r.Post(endpoint, rest.PostPerson)
+		r.Delete(endpoint, rest.DeletePerson)
 	})
 	http.ListenAndServe(":"+config.GetConfig().Port, router)
 }
