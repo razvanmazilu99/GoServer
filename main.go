@@ -25,15 +25,15 @@ func main() {
 		log.Fatal("Not able to create config")
 	}
 
-	db.Initdatabase("postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable", 1)
+	db.Initdatabase(config.GetConfig().Database.URL, config.GetConfig().Database.Version)
 
 	http.HandleFunc("/", rest.Welcome)
 	http.HandleFunc("/health", rest.Welcome)
 	router := chi.NewRouter()
-	router.Route("/v1", func(r chi.Router) {
+	router.Route("/"+config.GetConfig().APPVersion, func(r chi.Router) {
 		r.Get("/person", rest.GetPerson)
 		r.Post("/person", rest.PostPerson)
 		r.Delete("/person", rest.DeletePerson)
 	})
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":"+config.GetConfig().Port, router)
 }
