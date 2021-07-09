@@ -71,3 +71,16 @@ func hasError(rw http.ResponseWriter, err error, message string) bool {
 
 	return false
 }
+
+func DeletePerson(rw http.ResponseWriter, r *http.Request) {
+
+	id := r.URL.Query().Get("id")
+
+	result := db.GetDB().Delete(&entity.Person{}, "id=?", id)
+
+	if result.Error != nil {
+		http.Error(rw, "Internal error. Please try again after a while", http.StatusInternalServerError)
+		return
+	}
+	rw.Write([]byte("Record successfully"))
+}
