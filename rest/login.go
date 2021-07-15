@@ -26,6 +26,18 @@ func Login(rw http.ResponseWriter, req *http.Request) {
 	session.ID = credentials.ID
 	session.Values["userID"] = credentials.ID
 	session.Values["authenticated"] = true
-	fmt.Fprintln(rw, "Login Successful")
+	//fmt.Fprintln(rw, "Login Successful")
 	session.Save(req, rw)
+}
+
+func Welcome1(rw http.ResponseWriter, req *http.Request) {
+
+	name := req.URL.Query().Get("name")
+	session, _ := store.Get(req, "cookie-name")
+	auth, ok := session.Values["authenticated"].(bool)
+	if !ok || !auth {
+		http.Error(rw, "Access forbidden", http.StatusForbidden)
+		return
+	}
+	fmt.Fprintln(rw, "Welcome", name)
 }
