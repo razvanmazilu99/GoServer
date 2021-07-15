@@ -1,0 +1,21 @@
+version: '1'
+
+services:
+    postgres:
+        image: postgres
+        ports:
+            - "5432:5432"
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=mysecretpassword
+            - POSTGRES_DB=razvan
+    golang:
+        build: .
+        # image: rmazilu/golang:1.0
+        restart: on-failure
+        environment:
+            - DATABASE_URL=postgres://postgres:mysecretpassword@goserver_postgres_1:5432/razvan?sslmode=disable
+        ports:
+            - "8080:8080"
+        depends_on:
+            - postgres
