@@ -26,6 +26,7 @@ func main() {
 	}
 
 	db.Initdatabase()
+	db.InitData()
 
 	var endpoint = "/person"
 

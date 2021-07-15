@@ -26,7 +26,7 @@ func Login(rw http.ResponseWriter, req *http.Request) {
 	session.ID = credentials.ID
 	session.Values["userID"] = credentials.ID
 	session.Values["authenticated"] = true
-	//fmt.Fprintln(rw, "Login Successful")
+	rw.Write([]byte("Login Successful"))
 	session.Save(req, rw)
 }
 
