@@ -38,6 +38,7 @@ func main() {
 		r.Delete(endpoint, rest.DeletePerson)
 		r.Post("/login", rest.Login)
 		r.Get("/welcome", rest.Welcome1)
+		r.Get("/logout", rest.Logout)
 	})
 	http.ListenAndServe(":"+config.GetConfig().Port, router)
 }

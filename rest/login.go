@@ -26,7 +26,7 @@ func Login(rw http.ResponseWriter, req *http.Request) {
 	session.ID = credentials.ID
 	session.Values["userID"] = credentials.ID
 	session.Values["authenticated"] = true
-	fmt.Fprintln(rw, "Login Successful")
+	//fmt.Fprintln(rw, "Login Successful")
 	session.Save(req, rw)
 }
 
@@ -40,4 +40,23 @@ func Welcome1(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	fmt.Fprintln(rw, "Welcome", name)
+}
+
+func Logout(rw http.ResponseWriter, req *http.Request) {
+	session, _ := store.Get(req, "cookie-name")
+	auth, ok := session.Values["authenticated"].(bool)
+
+	if !ok {
+		http.Error(rw, "Couldn't convert type to bool", http.StatusForbidden)
+		return
+	}
+
+	if !auth {
+		http.Error(rw, "Already logged out", http.StatusForbidden)
+		return
+	} else {
+		session.Values["authenticated"] = false
+		session.Save(req, rw)
+		fmt.Fprintln(rw, "Session over")
+	}
 }
